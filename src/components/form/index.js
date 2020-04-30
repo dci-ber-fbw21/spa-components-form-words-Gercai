@@ -5,7 +5,6 @@ import './index.scss';
 
 class Form extends React.Component{
  
-
     constructor(props){
 
         super(props);
@@ -13,27 +12,20 @@ class Form extends React.Component{
         this.state = {
             words: [],
             currentWord: "",
-            count: 0
         }
 
+        
         this.wordList = [];
+        this.count = 0;
 
         this.handleEnter = this.handleEnter.bind(this);
         this.handleShow = this.handleShow.bind(this);
+        this.function1 = this.function1.bind(this);
+        this.function2 = this.function2.bind(this);
 
     }
 
-    componentDidMount() {        
-
-        this.timer = setInterval(
-
-            () => this.setState({
-                currentWord: this.state.words[this.state.count],
-                count: this.state.count++
-            }),
-            2000,
-        );
-    }
+    
 
     componentWillUnmount() {
         clearInterval(this.timer);
@@ -57,18 +49,28 @@ class Form extends React.Component{
             words: this.wordList
         })
 
+   }
 
-    
-        
 
-        
+   function1(){
+                this.count++;
+                if(this.count > this.state.words.length){
+                    this.count = 0;
+                }    
+   }
 
-    }
+   function2(){
+    this.setState({
+        currentWord: this.state.words[this.state.count],
+        count: this.count
+    })
+   }
 
     handleShow(event){
-
-
-
+       setInterval( function(){
+        this.function1(),
+        this.function2()
+       },1000);
     }   
 
     handleSubmit(event){
@@ -76,8 +78,6 @@ class Form extends React.Component{
 
         // Do stuff
     }
-
-
 
     render(){
 
