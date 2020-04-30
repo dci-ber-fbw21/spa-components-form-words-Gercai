@@ -14,7 +14,6 @@ class Form extends React.Component{
             currentWord: "",
         }
 
-        
         this.wordList = [];
         this.count = 0;
 
@@ -25,12 +24,9 @@ class Form extends React.Component{
 
     }
 
-    
-
     componentWillUnmount() {
         clearInterval(this.timer);
     }
-
 
     handleEnter(event){
 
@@ -42,15 +38,12 @@ class Form extends React.Component{
         
         
         this.wordList.push(word);
-
         console.log(this.wordList);
-
         this.setState({
             words: this.wordList
         })
 
    }
-
 
    function1(){
                 this.count++;
@@ -68,8 +61,8 @@ class Form extends React.Component{
 
     handleShow(event){
        setInterval( function(){
-        this.function1(),
-        this.function2()
+        this.function1();
+        this.function2();
        },1000);
     }   
 
@@ -99,7 +92,6 @@ class Form extends React.Component{
         </form>
 
         <article>
-
            I am a {this.state.currentWord} 
         </article>
 
