@@ -1,8 +1,6 @@
 import React from 'react';
 import './index.scss';
 
-
-
 class Form extends React.Component{
  
     constructor(props){
@@ -12,6 +10,9 @@ class Form extends React.Component{
         this.state = {
             words: [],
             currentWord: "",
+            errorMessage: "invisible",
+            resultMessage: "invisible",
+            form: ""
         }
 
         this.wordList = [];
@@ -28,23 +29,17 @@ class Form extends React.Component{
         clearInterval(this.timer);
     }
 
-    handleEnter(event){
-
+    handleEnter(){
         let word = document.querySelector(".field").value;
         document.querySelector(".field").value = "";
-        
         this.wordList.push(word);
         this.setState({
             words: this.wordList
         })
-
    }
 
    increaseCount(){
-                this.count++;
-                if(this.count > this.state.words.length){
-                    this.count = 0;
-                }    
+        this.count>=this.state.words.length?this.count=0:this.count++;
    }
 
    setCurrentWord(){
@@ -54,42 +49,68 @@ class Form extends React.Component{
     })
    }
 
-
 //    Mount
     handleShow(){
-       setInterval(() => {
-        this.increaseCount();
-        this.setCurrentWord();
-       },1000);
+
+        if(this.state.words.length < 3){
+            this.setState({
+                currentWord: "Expected at least 3 words or more",
+                errorMessage: "visible"
+            })
+
+        }
+        // Success
+        else{
+            this.setState({
+                resultMessage: "visible",
+                errorMessage: "invisible",
+                form: "invisible"
+            })
+
+            setInterval(() => {
+                this.setCurrentWord();
+                this.increaseCount();
+               },1000);
+        }
     }   
 
     handleSubmit(event){
         event.preventDefault();
-        // Do stuff
     }
 
     render(){
 
     return (
-        <article className="Form">
+        <article className="box">
             
-        <form onSubmit={this.handleSubmit} className="show">
+            <form onSubmit={this.handleSubmit} className={this.state.form}>
 
-        <fieldset>
-            <label>Enter Word:</label>
-            <input className="field" name="word"></input>
-        </fieldset>
+            <fieldset className="upper">
+              
+            <h3 id="words">Words</h3>
+            <input aria-labelledby="words" className="field" name="word"></input>
+               
+            </fieldset>
 
-        <fieldset>
-        <button onClick={this.handleShow}>Show</button>
-        <button onClick={this.handleEnter}>Enter</button>
-        </fieldset>
+            <fieldset>
+            <button onClick={this.handleShow}>Show</button>
+            <button onClick={this.handleEnter}>Enter</button>
+            </fieldset>
 
-        </form>
+            </form>
 
-        <article>
-           I am a {this.state.currentWord} 
-        </article>
+            <section name="result" className={this.state.resultMessage}>
+                {/* Inner Result */}
+                <article className="result">
+            I am a  
+            <span className={"word"}> {this.state.currentWord} </span>
+                </article>
+
+            </section>
+
+            <section name="Errmsg" className={this.state.errorMessage}>
+            {this.state.currentWord}
+            </section>
 
         </article>
       );
